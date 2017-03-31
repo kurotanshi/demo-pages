@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    html, body{  padding: 0; margin: 0; }
+  </style>
+</head>
+<body>
+
+
+<p style="width: 720px; height: 240px; border: 1px solid #aaa; margin: 1.5em 0;">
+  <div id="map-demo" style="width: 100%; height: 100%;"></div>
+</p>
+
+<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBxKtiOh3lYNzXBI6jjjC_oOGaqF1Z6Uy0"></script>
+<script type="text/javascript">
+
+$(function(){
+
+  var mapElement = document.getElementById('map-demo');
+
+  var mapOptions = {
+    center: new google.maps.LatLng(25.051269, 121.512386),
+    zoom: 16,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+  var map = new google.maps.Map(mapElement, mapOptions);
+
+  var marker = new google.maps.Marker({
+    map: map,
+    icon: 'https://chart.googleapis.com/chart?chst=d_map_pin_icon&chld=train|ffff00',
+    position: {lat: 25.051269, lng: 121.512386}
+  });
+
+
+});
+
+</script>
+
+</body>
+</html>
