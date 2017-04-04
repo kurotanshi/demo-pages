@@ -67,7 +67,7 @@
           // 計算街景預設角度
           heading = google.maps.geometry.spherical.computeHeading(result.location.latLng, target);
 
-          panorama.setPov({ heading: 0, pitch: 0 });
+          panorama.setPov({ heading: heading, pitch: 0 });
           panorama.setVisible(true);
         }
       });
