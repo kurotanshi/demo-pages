@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    html, body {
+      height: 100%; margin: 0; padding: 0;
+    }
+    #map{
+      position: relative; width: 100%; height: 100%; z-index: 2;
+    }
+    .toggleStView{
+      position: absolute; bottom: 1em; right: 3em; z-index: 10;
+      font-size: 1.5em; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+
+<div id="map"></div>
+<button class="toggleStView">街景切換</button>
+
+<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBxKtiOh3lYNzXBI6jjjC_oOGaqF1Z6Uy0"></script>
+<script type="text/javascript">
+
+(function(){
+
+  var toggleStView = false;
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 16,
+    mapTypeControl: false,
+    panControl: false,
+    scaleControl: true,
+    streetViewControl: false,
+    zoomControl: true,
+    zoomControlOptions:{
+      position: google.maps.ControlPosition.RIGHT_CENTER,
+      style: google.maps.ZoomControlStyle.SMALL
+    },
+    center: new google.maps.LatLng(25.0465705,121.5165742)
+  });
+  var panorama = map.getStreetView();
+
+  var marker = new google.maps.Marker({
+    map: map,
+    icon: '//chart.googleapis.com/chart?chst=d_map_pin_icon&chld=train|ffff00',
+    position: { lat: 25.0466184, lng: 121.5165866 }
+  });
+
+
+  document.querySelector('.toggleStView').addEventListener('click', function(event){
+
+    if( !toggleStView ){
+      toggleStView = !toggleStView;
+
+      var sv = new google.maps.StreetViewService();
+      var target = new google.maps.LatLng(25.0465705,121.5165742);
+
+      // 如果街景服務 ok
+      sv.getPanoramaByLocation(target, 50, function( result, status ){
+
+        if( status == google.maps.StreetViewStatus.OK ) {
+          panorama.setPosition( target );
+          panorama.setPov({ heading: 0, pitch: 0 });
+
+          // 計算街景預設角度
+          heading = google.maps.geometry.spherical.computeHeading(result.location.latLng, target);
+
+          panorama.setPov({ heading: 0, pitch: 0 });
+          panorama.setVisible(true);
+        }
+      });
+
+    }
+    else{
+      toggleStView = !toggleStView;
+      panorama.setVisible(false);
+    }
+
+  });
+
+})();
+</script>
+
+</body>
+</html>
