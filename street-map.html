@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style type="text/css">
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    h1 {
+      padding: 0;
+      margin: 0;
+    }
+    
+    #map {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+    
+    .toggleStView {
+      position: absolute;
+      bottom: 1em;
+      right: 3em;
+      z-index: 10;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+    
+    .item {
+      display: block;
+      width: 200px;
+      height: 55px;
+      line-height: 60px;
+      font-size: 16px;
+      border: 1px solid #000;
+      background-color: #fff;
+      overflow: hidden;
+    }
+    
+    .item>div {
+      float: left;
+      padding: 5px;
+    }
+    
+    .item .text {
+      height: 50px;
+      color: #555;
+      line-height: 23px;
+      font-size: 1em;
+    }
+    
+    .item .icon {
+      font-size: 2.2em;
+      width: 40px;
+      line-height: 47px;
+      margin-right: 5px;
+      text-align: center;
+      background-color: blue;
+      color: #fff;
+    }
+    
+    .info {
+      display: none;
+      position: absolute;
+      top: 20%;
+      left: 35%;
+      width: 25%;
+      height: 60%;
+      color: #fff;
+      padding: 2% 3%;
+      background-color: rgba(125, 125, 125, 0.8);
+      border: 1px solid #fff;
+      z-index: 999;
+    }
+    
+    .info .close {
+      position: absolute;
+      font-size: 1.66em;
+      top: 10px;
+      right: 16px;
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div id="map"></div>
+
+
+  <div class="info">
+    <h2>測試文字 </h2>
+    <a href="#" class="close">&times;</a>
+    <hr>
+    <p>測試文字 測試文字 測試文字</p>
+    <p>測試文字 測試文字 測試文字</p>
+    <p>測試文字 測試文字 測試文字</p>
+  </div>
+
+  <button class="toggleStView">街景切換</button>
+
+  <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="//maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyBxKtiOh3lYNzXBI6jjjC_oOGaqF1Z6Uy0"></script>
+  <script src="//googlemaps.github.io/js-rich-marker/src/richmarker.js"></script>
+
+  <script type="text/javascript">
+    //calculates distance between two points in km's
+    function calcDistance(p1, p2) {
+      return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(3) * 1000;
+    }
+
+    (function() {
+      var toggleStView = false;
+      var center = new google.maps.LatLng(25.1332841566999, 121.530071071164);
+      var marker2;
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 20,
+        mapTypeControl: false,
+        panControl: true,
+        scaleControl: true,
+        streetViewControl: true,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_CENTER,
+          style: google.maps.ZoomControlStyle.SMALL
+        },
+        center: center
+      });
+
+      var panorama = map.getStreetView();
+
+      // map.addListener('click', function(e) {
+      //   console.log(e.latLng.lat(), e.latLng.lng())
+      // });
+
+      document.querySelector('.toggleStView').addEventListener('click', function(event) {
+        if (!toggleStView) {
+          toggleStView = !toggleStView;
+          var sv = new google.maps.StreetViewService();
+          var target = center;
+
+          // 如果街景服務 ok
+          sv.getPanoramaByLocation(target, 50, function(result, status) {
+            if (status == google.maps.StreetViewStatus.OK) {
+              panorama.setPosition(target);
+              panorama.setVisible(true);
+              // 計算街景預設角度
+              heading = google.maps.geometry.spherical.computeHeading(result.location.latLng, target);
+
+              panorama.setPov({
+                heading: 0,
+                pitch: 0
+              });
+
+              marker2 = new RichMarker({
+                position: center,
+                map: panorama,
+                content: `
+                  <div class="item">
+                    <div class="icon"><i class="fa fa-home" aria-hidden="true"></i></div>
+                    <div class="text">
+                      <div>測試文字</div>
+                      <div>★★★★☆</div>
+                    </div>
+                  </div>
+                `
+              });
+              marker2.setShadow(0);
+
+              marker2.addListener('click', function() {
+                // console.log(1)
+                $('.info').fadeIn();
+              });
+
+            }
+          });
+        } else {
+          toggleStView = !toggleStView;
+          panorama.setVisible(false);
+        }
+      });
+
+
+      panorama.addListener('position_changed', function() {
+        // console.log(panorama.position.lat(), panorama.position.lng());
+
+        var html = '',
+          inner = '';
+        var p1 = center;
+        var p2 = new google.maps.LatLng(panorama.position.lat(), panorama.position.lng());
+        var d = calcDistance(p1, p2);
+        var range = (100 - (d - 10)) / 100;
+
+        if (marker2) {
+          html = marker2.getContent();
+          inner = $(html).html();
+          style = ' transform: scale(' + range + ', ' + range + '); ';
+          if (d > 35) {
+            style += ' opacity: 0.6; '
+          }
+          html = '<div class="item" style="' + style + '">' + inner + '</div>';
+          marker2.setContent(html);
+        }
+
+
+      });
+
+      $('.info .close').on('click', function(e) {
+        e.preventDefault();
+        $(this).parent().hide();
+      });
+
+    })();
+  </script>
+
+</body>
+
+</html>
