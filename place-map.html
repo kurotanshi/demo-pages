@@ -162,20 +162,26 @@
 
       google.maps.event.addListener(marker, 'click', function() {
         var info = '';
+        var distance = place.distance;
 
-        info = `
-          <b>${place.name}</b> <br>
-          ${place.vicinity} <br>
-          營業狀態： ${ (place.opening_hours.open_now) ?
-            '<span style="color: green">營業中</span>' : '<span style="color: red">休息中</span>' } <br>
-          距離 ${place.distance} m <br>
-          ★ ${place.rating}
-        `;
+        var service = new google.maps.places.PlacesService(map);
+        service.getDetails({placeId: place.place_id}, function(place, status){
+          console.log( place, status );
+          info = `
+            <b>${place.name}</b> <br>
+            <span style="margin-right: 2em">★ ${place.rating}</span>
+            <span>距離 ${distance} m</span> <br>
 
-        console.log( place );
+            地址: ${place.vicinity} <br>
+            電話: ${place.formatted_phone_number} <br>
+            營業狀態： ${ (place.opening_hours.open_now) ?
+              '<span style="color: green">營業中</span>' : '<span style="color: red">休息中</span>' }
+          `;
 
-        infowindow.setContent(info);
-        infowindow.open(map, this);
+          infowindow.setContent(info);
+          infowindow.open(map, this);
+        }.bind(this));
+
       });
     }
 
