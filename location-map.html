@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style type="text/css">
+    html, body {
+      height: 100%; margin: 0; padding: 0;
+    }
+
+    #map {
+      position: absolute; width: 100%; height: 100%;
+    }
+    #map:after, #map:before{
+      position: absolute;
+      display: block;
+      content: '';
+      z-index: 10;
+    }
+    #map:after{
+      width: 100%;
+      height: 1px;
+      background-color: #000;
+      top: 50%; left: 0;
+    }
+    #map:before{
+      width: 1px;
+      height: 100%;
+      background-color: #000;
+      top: 0; left: 50%;
+    }
+
+    #location{
+      position: absolute;
+      width: 420px; height: 60px; line-height: 60px; background-color: #fff;
+      padding: 10px; border: 1px solid #000; right: 20px; top: 10px;
+    }
+
+
+  </style>
+</head>
+
+<body>
+
+  <div id="map"></div>
+  <div id="location"></div>
+
+  <script src="//maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyBxKtiOh3lYNzXBI6jjjC_oOGaqF1Z6Uy0"></script>
+  <script src="//googlemaps.github.io/js-rich-marker/src/richmarker.js"></script>
+
+  <script type="text/javascript">
+    (function() {
+
+      var map;
+      var pyrmont = new google.maps.LatLng(25.03082972648969, 121.55017727927338);
+
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: pyrmont,
+        zoom: 17
+      });
+
+      map.addListener('center_changed', function() {
+        console.log( map.center );
+        document.getElementById('location').innerText = '經緯度: ' + map.center.lat() + ", " + map.center.lng();
+      });
+
+
+    })();
+  </script>
+
+</body>
+
+</html>
