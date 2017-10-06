@@ -29,12 +29,15 @@
     #pac-input {
       background-color: #fff;
       font-family: Roboto;
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 300;
       margin-left: 12px;
-      padding: 0 11px 0 13px;
+      padding: 4px 11px 4px 13px;
       text-overflow: ellipsis;
       width: 300px;
+      height: 60px;
+      line-height: 60px;
+      border: 1px solid #aaa;
     }
 
     #pac-input:focus {
@@ -45,12 +48,11 @@
 
 <body>
 
-  <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+  <input id="pac-input" class="controls" type="text" placeholder="找餐廳，輸入關鍵字">
   <div id="map"></div>
 
   <script src="//maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyBxKtiOh3lYNzXBI6jjjC_oOGaqF1Z6Uy0"></script>
   <script src="//googlemaps.github.io/js-rich-marker/src/richmarker.js"></script>
-  <!-- <script src="//googlemaps.github.io/js-rich-marker/src/richmarker.js"></script> -->
 
   <script type="text/javascript">
     (function() {
@@ -61,7 +63,7 @@
 
       map = new google.maps.Map(document.getElementById('map'), {
         center: pyrmont,
-        zoom: 15,
+        zoom: 16,
         styles: [
         { stylers: [{ visibility: 'simplified' }] },
         {
@@ -82,7 +84,7 @@
         strokeOpacity: 0.8,
         strokeWeight: 2,
         fillColor: '#AA0000',
-        fillOpacity: 0.2
+        fillOpacity: 0.1
       });
 
       var rMin = 0, rMax = 800 + 50;
