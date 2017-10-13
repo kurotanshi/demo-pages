@@ -75,6 +75,11 @@
       var input = document.getElementById('pac-input');
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
+      var marker = new google.maps.Marker({
+        position: pyrmont,
+        map: map,
+        draggable:true
+      });
 
       var circle = new google.maps.Circle({
         map: map,
