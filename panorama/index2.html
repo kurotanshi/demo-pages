@@ -25,7 +25,7 @@
       panorama = new PANOLENS.ImagePanorama( 'images/brick_lounge_2k.jpg' );
       viewer = new PANOLENS.Viewer({
         controlBar: true,
-        controlButtons: [],
+        controlButtons: ['setting'],
         autoHideInfospot: true,
         enableReticle: true,
         autoReticleSelect: true,
@@ -36,11 +36,11 @@
 
       window.addEventListener('deviceorientation', function(e){
         if( e.beta === null || event.gamma === null ){
-          console.log('desktop');
+          // console.log('desktop');
           panorama.position.set( -350, 90, -50 );
         }
         else{
-          console.log('mobile');
+          // console.log('mobile');
           viewer.enableControl(PANOLENS.Controls.DEVICEORIENTATION);
         }
       });
