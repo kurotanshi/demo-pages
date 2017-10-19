@@ -24,10 +24,11 @@
     <script>
       var panorama, viewer;
       panorama = new PANOLENS.ImagePanorama( 'images/demo.png' );
-      panorama.position.set( 4699.46, 1579.71, -603.49 );
+      panorama.position.set( -350, 90, -50 );
 
       viewer = new PANOLENS.Viewer({
-        container: document.body,      // A DOM Element container
+        controlBar: false,
+        enableReticle: true,
         output: 'console'              // Whether and where to output infospot position. Could be 'console' or 'overlay'
       });
 
