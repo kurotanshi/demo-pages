@@ -23,6 +23,7 @@
     <script>
       var panorama, viewer;
       panorama = new PANOLENS.ImagePanorama( 'images/demo.jpg?v=1' );
+      panorama.position.set( 0, 0, 0 );
 
       viewer = new PANOLENS.Viewer({
         controlBar: true,
@@ -30,23 +31,23 @@
         autoHideInfospot: true,
         enableReticle: true,
         autoReticleSelect: true,
-        cameraFov: 80,
+        cameraFov: 90,
         output: 'console'
       });
 
+
       viewer.add( panorama );
 
-
-      window.addEventListener('deviceorientation', function(e){
-        if( e.beta === null || event.gamma === null ){
-          console.log('desktop');
-          panorama.position.set( 0, 0, 0 );
-        }
-        else{
-          console.log('mobile');
-          viewer.enableControl(PANOLENS.Controls.DEVICEORIENTATION);
-        }
-      });
+      // window.addEventListener('deviceorientation', function(e){
+      //   if( e.beta === null || event.gamma === null ){
+      //     console.log('desktop');
+      //     panorama.position.set( 0, 0, 0 );
+      //   }
+      //   else{
+      //     console.log('mobile');
+      //     viewer.enableControl(PANOLENS.Controls.DEVICEORIENTATION);
+      //   }
+      // });
 
       // Speficy target (panorama) to be updated every frame
       // viewer.addUpdateCallback( function () {
