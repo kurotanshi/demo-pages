@@ -33,7 +33,16 @@
       });
 
       viewer.add( panorama );
-      // viewer.enableControl(PANOLENS.Controls.DEVICEORIENTATION);
-      viewer.DeviceOrientationControls.enabled = true;
+
+      window.addEventListener('deviceorientation', function(e){
+        if( e.beta === null || event.gamma === null ){
+          console.log('desktop');
+          panorama.position.set( -350, 90, -50 );
+        }
+        else{
+          console.log('mobile');
+          viewer.enableControl(PANOLENS.Controls.DEVICEORIENTATION);
+        }
+      });
     </script>
   </body>

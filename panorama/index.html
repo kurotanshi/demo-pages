@@ -23,11 +23,10 @@
     <script>
       var panorama, viewer;
       panorama = new PANOLENS.ImagePanorama( 'images/demo.png' );
-      panorama.position.set( -350, 90, -50 );
 
       viewer = new PANOLENS.Viewer({
         controlBar: true,
-        controlButtons: ['setting'],
+        controlButtons: [],
         autoHideInfospot: true,
         enableReticle: true,
         autoReticleSelect: true,
@@ -35,5 +34,22 @@
       });
 
       viewer.add( panorama );
+
+
+      window.addEventListener('deviceorientation', function(e){
+        if( e.beta === null || event.gamma === null ){
+          console.log('desktop');
+          panorama.position.set( -350, 90, -50 );
+        }
+        else{
+          console.log('mobile');
+          viewer.enableControl(PANOLENS.Controls.DEVICEORIENTATION);
+        }
+      });
+
+      // Speficy target (panorama) to be updated every frame
+      // viewer.addUpdateCallback( function () {
+      //   panorama.rotation.y -= 0.0025;
+      // });
     </script>
   </body>
