@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, shrink-to-fit=no">
+    <title>Panolens.js panorama image panorama</title>
+    <style>
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #000;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <script src="//pchen66.github.io/js/three/three.min.js"></script>
+    <script src="//pchen66.github.io/js/panolens/panolens.min.js"></script>
+
+    <script>
+      var panorama, viewer;
+      panorama = new PANOLENS.ImagePanorama( 'images/demo.png' );
+      panorama.position.set( 0, 0, 0 );
+
+      // viewer = new PANOLENS.Viewer( { output: 'console' } );
+      viewer = new PANOLENS.Viewer({
+        container: document.body,       // A DOM Element container
+        output: 'console'               // Whether and where to output infospot position. Could be 'console' or 'overlay'
+      });
+
+      viewer.add( panorama );
+      // Speficy target (panorama) to be updated every frame
+      // viewer.addUpdateCallback( function () {
+      //   panorama.rotation.y -= 0.0025;
+      // });
+
+      window.addEventListener('deviceorientation', function(event) {
+        var alpha = event.alpha;
+        var beta = event.beta;
+        var gamma = event.gamma;
+      }, false);
+    </script>
+  </body>
