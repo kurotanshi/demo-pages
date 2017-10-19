@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, shrink-to-fit=no">
-    <title>Panolens.js panorama image panorama</title>
+    <title></title>
     <style>
       html, body {
         margin: 0;
@@ -18,8 +17,7 @@
 
   <body>
 
-    <script src="//pchen66.github.io/js/three/three.min.js"></script>
-    <script src="//pchen66.github.io/js/panolens/panolens.min.js"></script>
+    <script src="//s1.hfcdn.com/min/b=fp/common/js/panorama_libs&f=three.min.js,panolens.min.js"></script>
 
     <script>
       var panorama, viewer;
@@ -27,20 +25,12 @@
       panorama.position.set( -350, 90, -50 );
 
       viewer = new PANOLENS.Viewer({
-        controlBar: true,
-        enableReticle: true,
-        output: 'console'              // Whether and where to output infospot position. Could be 'console' or 'overlay'
+        controlBar: false,
+        output: 'console'
       });
-
-      // PANOLENS.Controls.DEVICEORIENTATION
 
       viewer.add( panorama );
       viewer.enableControl(PANOLENS.Controls.DEVICEORIENTATION);
-
-      // Speficy target (panorama) to be updated every frame
-      // viewer.addUpdateCallback( function () {
-      //   panorama.rotation.y -= 0.0025;
-      // });
-
     </script>
   </body>
+</html>
