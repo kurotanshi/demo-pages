@@ -27,23 +27,20 @@
       panorama.position.set( -350, 90, -50 );
 
       viewer = new PANOLENS.Viewer({
-        controlBar: false,
+        controlBar: true,
         enableReticle: true,
         output: 'console'              // Whether and where to output infospot position. Could be 'console' or 'overlay'
       });
 
+      // PANOLENS.Controls.DEVICEORIENTATION
+
       viewer.add( panorama );
+      viewer.enableControl(PANOLENS.Controls.DEVICEORIENTATION);
 
       // Speficy target (panorama) to be updated every frame
       // viewer.addUpdateCallback( function () {
       //   panorama.rotation.y -= 0.0025;
       // });
-
-      // window.addEventListener('deviceorientation', function(event) {
-      //   var alpha = event.alpha;
-      //   var beta = event.beta;
-      //   var gamma = event.gamma;
-      // }, false);
 
     </script>
   </body>
