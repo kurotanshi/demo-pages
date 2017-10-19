@@ -22,7 +22,7 @@
 
     <script>
       var panorama, viewer;
-      panorama = new PANOLENS.ImagePanorama( 'images/demo.png' );
+      panorama = new PANOLENS.ImagePanorama( 'images/demo.jpg' );
 
       viewer = new PANOLENS.Viewer({
         controlBar: true,
@@ -30,6 +30,7 @@
         autoHideInfospot: true,
         enableReticle: true,
         autoReticleSelect: true,
+        cameraFov: 80,
         output: 'console'
       });
 
@@ -39,7 +40,7 @@
       window.addEventListener('deviceorientation', function(e){
         if( e.beta === null || event.gamma === null ){
           console.log('desktop');
-          panorama.position.set( -350, 90, -50 );
+          panorama.position.set( 0, 0, 0 );
         }
         else{
           console.log('mobile');
