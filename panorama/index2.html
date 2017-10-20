@@ -4,15 +4,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, shrink-to-fit=no">
-    <title>Panolens.js panorama image panorama</title>
     <style>
-      html, body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background-color: #000;
-      }
+
     </style>
   </head>
 
@@ -21,28 +14,22 @@
     <script src="//s1.hfcdn.com/min/b=fp/common/js/panorama_libs&f=three.min.js,panolens.min.js"></script>
 
     <script>
+    // (function(){
+
       var panorama, viewer;
-      panorama = new PANOLENS.ImagePanorama( 'images/brick_lounge_2k.jpg' );
+      panorama = new PANOLENS.ImagePanorama( 'images/demo.jpg?v=1' );
+      panorama.position.set( 0, 0, 0 );
+
+
       viewer = new PANOLENS.Viewer({
-        controlBar: true,
-        controlButtons: [],
-        autoHideInfospot: true,
-        enableReticle: true,
-        autoReticleSelect: true,
-        output: 'console'
+        controlBar: false,
+        cameraFov: 80,
+        output: 'overlay'
       });
 
       viewer.add( panorama );
 
-      window.addEventListener('deviceorientation', function(e){
-        if( e.beta === null || event.gamma === null ){
-          // console.log('desktop');
-          panorama.position.set( -350, 90, -50 );
-        }
-        else{
-          // console.log('mobile');
-          viewer.enableControl(PANOLENS.Controls.DEVICEORIENTATION);
-        }
-      });
+    // })();
     </script>
   </body>
+</html>
