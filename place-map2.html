@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style type="text/css">
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .map {
+      height: 100%;
+      width: 49.8%;
+      border-right: 1px solid #000;
+      float: left;
+    }
+
+    .controls {
+      margin-top: 10px;
+      border: 1px solid transparent;
+      border-radius: 2px 0 0 2px;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      height: 32px;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #pac-input {
+      background-color: #fff;
+      font-family: Roboto;
+      font-size: 18px;
+      font-weight: 300;
+      margin-left: 12px;
+      padding: 4px 11px 4px 13px;
+      text-overflow: ellipsis;
+      width: 300px;
+      height: 60px;
+      line-height: 60px;
+      border: 1px solid #aaa;
+    }
+
+    #pac-input:focus {
+      border-color: #4d90fe;
+    }
+
+    .title1, .title2{
+      position: absolute;
+      z-index: 100;
+      width: 40%;
+      height: 40px;
+      left: 40px;
+      background-color: #f00;
+      color: #fff;
+      font-size: 28px;
+      text-align: center;
+    }
+    .title2{
+      left: 55%;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- <input id="pac-input" class="controls" type="text" placeholder="找餐廳，輸入關鍵字"> -->
+  <div id="map" class="map"></div>
+  <div id="map2" class="map"></div>
+  <div class="title1">google.maps.places.RankBy.DISTANCE</div>
+  <div class="title2">radius 800M</div>
+
+
+  <script src="//maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyBxKtiOh3lYNzXBI6jjjC_oOGaqF1Z6Uy0"></script>
+  <!-- <script src="//googlemaps.github.io/js-rich-marker/src/richmarker.js"></script> -->
+
+  <script type="text/javascript">
+    var mapinit = function(ele, type) {
+
+      var markers = [];
+      var map, infowindow = new google.maps.InfoWindow();
+      var pyrmont = new google.maps.LatLng(25.03082972648969, 121.55017727927338);
+
+      map = new google.maps.Map(ele, {
+        center: pyrmont,
+        zoom: 15,
+        styles: [
+        { stylers: [{ visibility: 'simplified' }] },
+        {
+          elementType: 'labels',
+          stylers: [{ visibility: 'off' }]
+        }]
+      });
+
+      // var input = document.getElementById('pac-input');
+      // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+      var marker = new google.maps.Marker({
+        position: pyrmont,
+        map: map,
+        draggable:true
+      });
+
+      var circle = new google.maps.Circle({
+        map: map,
+        center: { lat: 25.030362, lng: 121.548814 },
+        radius: 1000,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#AA0000',
+        fillOpacity: 0.1
+      });
+
+      // var rMin = 0, rMax = 800 + 50;
+
+      // setInterval(function() {
+      //   var radius = circle.getRadius();
+      //   radius = (radius > rMax) ? 0 : radius + 4;
+      //   circle.setRadius(radius);
+
+      //   circle.setOptions({
+      //     strokeOpacity: (rMax - radius) / rMax,
+      //     fillOpacity: (rMax - radius) / (rMax*2)
+      //   });
+
+      // }, 10);
+
+    function getNearbyPlaces(obj){
+      // obj = {place, radius, keyword}
+
+      obj = obj || {};
+      obj.radius = obj.radius || 800;
+      obj.place = obj.place || {lat: 25.03082972648969, lng: 121.55017727927338};
+      obj.keyword = obj.keyword || '';
+
+      var request = {
+        keyword: obj.keyword,
+        location: new google.maps.LatLng(obj.place.lat, obj.place.lng),
+        rankBy: google.maps.places.RankBy.DISTANCE,
+        types: ['restaurant']
+      };
+
+      var request2 = {
+        keyword: obj.keyword,
+        location: new google.maps.LatLng(obj.place.lat, obj.place.lng),
+        radius: obj.radius,
+        types: ['restaurant']
+      };
+
+      var request_type = ( type === 0 ) ? request : request2;
+
+      while (markers.length > 0) {
+        markers.pop().setMap(null);
+      }
+
+      var service = new google.maps.places.PlacesService(map);
+
+      service.nearbySearch(request_type, function(results, status, pagination){
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+          if( pagination.hasNextPage ) {
+            pagination.nextPage();
+          }
+
+          results.map( d => { d.distance = calcDistance(request.location, d.geometry.location); })
+          results.sort( (a, b) => { return a.distance - b.distance; })
+
+          for (var i = 0; i < results.length; i++) {
+            let place = results[i];
+            place.idx = i+1;
+            createMarker(place);
+          }
+
+        }
+      });
+    }
+
+    // calculates distance between two points
+    function calcDistance(p1, p2) {
+      return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(3) * 1000;
+    };
+
+    function createMarker(place) {
+
+      var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location,
+        icon: {
+          url: 'https://developers.google.com/maps/documentation/javascript/images/circle.png',
+          anchor: new google.maps.Point(15, 15),
+          scaledSize: new google.maps.Size(15, 26)
+        }
+        // icon: place.icon
+        // icon: 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.8|0|EE77aa|14|_|' + place.idx
+      });
+
+      markers.push(marker);
+
+      google.maps.event.addListener(marker, 'click', function() {
+        var info = '';
+        var distance = place.distance;
+
+        info = `
+          <b>${place.name}</b> <br>
+          <span style="margin-right: 2em">★ ${place.rating}</span>
+          <span>距離 ${distance} m</span> <br>
+
+          地址: ${place.vicinity} <br>
+          營業狀態： ${ (place.opening_hours.open_now) ?
+            '<span style="color: green">營業中</span>' : '<span style="color: red">休息中</span>' }
+        `;
+
+        infowindow.setContent(info);
+        infowindow.open(map, this);
+
+        // var service = new google.maps.places.PlacesService(map);
+
+        // service.getDetails({placeId: place.place_id}, function(place, status){
+        //   console.log( place, status );
+        // }.bind(this));
+
+      });
+    }
+
+    getNearbyPlaces();
+
+    // document.getElementById('pac-input')
+    //   .addEventListener('keyup', function(e){
+    //     if( e.keyCode === 13 ) {
+    //       getNearbyPlaces({ keyword: this.value });
+    //     }
+    //   });
+
+    };
+
+    // var mapElem = ;
+    mapinit(document.getElementById('map'), 0);
+    mapinit(document.getElementById('map2'), 1);
+
+  </script>
+
+</body>
+
+</html>
