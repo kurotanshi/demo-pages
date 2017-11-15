@@ -3,7 +3,7 @@
 
 <head>
   <title></title>
-  <meta name=”viewport” content=”width=device-width, initial-scale=1.0″>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <style type="text/css">
     #map {
@@ -178,7 +178,9 @@
 
           地址: ${place.vicinity} <br>
           營業狀態： ${ (place.opening_hours.open_now) ?
-            '<span style="color: green">營業中</span>' : '<span style="color: red">休息中</span>' }
+            '<span style="color: green">營業中</span>' : '<span style="color: red">休息中</span>' } <br>
+          <a target="_blank" href="./place-detail.html?place=${place.place_id}">link</a>
+
         `;
 
         infowindow.setContent(info);
@@ -187,7 +189,8 @@
         // var service = new google.maps.places.PlacesService(map);
 
         // service.getDetails({placeId: place.place_id}, function(place, status){
-        //   console.log( place, status );
+        //   console.log( place );
+        //   console.log( status );
         // }.bind(this));
 
       });
