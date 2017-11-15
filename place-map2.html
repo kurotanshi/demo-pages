@@ -81,11 +81,25 @@
   <!-- <script src="//googlemaps.github.io/js-rich-marker/src/richmarker.js"></script> -->
 
   <script type="text/javascript">
+
+    var getParms = function (){
+      var o = {};
+      window.location.search.slice(1).split('&').map( d => {
+        if( d.split('=')[0] !== '' ) {
+          o[d.split('=')[0]] = decodeURIComponent(d.split('=')[1]);
+        }
+      });
+      return o;
+    };
+
+    var parms = getParms();
+
     var mapinit = function(ele, type) {
 
       var markers = [];
       var map, infowindow = new google.maps.InfoWindow();
-      var pyrmont = new google.maps.LatLng(25.03082972648969, 121.55017727927338);
+      var pyrmont = (parms.latlng) ?  new google.maps.LatLng(+parms.latlng.split(',')[0], +parms.latlng.split(',')[1]) :
+      new google.maps.LatLng(25.03082972648969, 121.55017727927338);
 
       map = new google.maps.Map(ele, {
         center: pyrmont,
@@ -109,7 +123,7 @@
 
       var circle = new google.maps.Circle({
         map: map,
-        center: { lat: 25.030362, lng: 121.548814 },
+        center: (parms.latlng) ? { lat: +parms.latlng.split(',')[0], lng: +parms.latlng.split(',')[1] } : { lat: 25.030362, lng: 121.548814 },
         radius: 1000,
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,
@@ -118,26 +132,12 @@
         fillOpacity: 0.1
       });
 
-      // var rMin = 0, rMax = 800 + 50;
-
-      // setInterval(function() {
-      //   var radius = circle.getRadius();
-      //   radius = (radius > rMax) ? 0 : radius + 4;
-      //   circle.setRadius(radius);
-
-      //   circle.setOptions({
-      //     strokeOpacity: (rMax - radius) / rMax,
-      //     fillOpacity: (rMax - radius) / (rMax*2)
-      //   });
-
-      // }, 10);
-
     function getNearbyPlaces(obj){
       // obj = {place, radius, keyword}
 
       obj = obj || {};
       obj.radius = obj.radius || 800;
-      obj.place = obj.place || {lat: 25.03082972648969, lng: 121.55017727927338};
+      obj.place = obj.place || (parms.latlng) ? { lat: +parms.latlng.split(',')[0], lng: +parms.latlng.split(',')[1] } : { lat: 25.030362, lng: 121.548814 };
       obj.keyword = obj.keyword || '';
 
       var request = {

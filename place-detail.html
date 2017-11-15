@@ -47,11 +47,12 @@
       height: 20px;
       line-height: 20px;
       text-align: center;
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: 900;
       z-index: 10;
     }
     .image-handler .dot{
-      color: #fff; margin-right: 8px;
+      color: #fff; margin-right: 6px;
     }
     .image-handler .active{
       color: #FDB913;
@@ -70,6 +71,10 @@
     <div class="image-handler">
       <span v-for="(p, idx) in placesDetail.photos" :class="{ active: idx == currPhotoIdx }" class="dot">&#8226;</span>
     </div>
+  </div>
+
+  <div class="header">
+    <h1>{{ placesDetail.name }}</h1>
   </div>
 
 </div>
