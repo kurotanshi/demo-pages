@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/css">
+    html, body { width: 100%; height: 100%; padding: 0; margin: 0; }
+    a{ text-decoration: none; }
+    #map{ display: none; }
+
+    #app{
+      display: block;
+      width: 100%;
+    }
+
+    .image-list{
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .image-list ul{
+      position: relative;
+      padding: 0; margin: 0;
+      list-style-type: none;
+      z-index: 1;
+      overflow: hidden;
+      transition: left .5s;
+    }
+
+    .image-list li {
+      display: block;
+      float: left;
+      width: 100vw;
+      height: 260px;
+    }
+
+    .image-list img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .image-handler{
+      display: block;
+      position: relative;
+      bottom: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      font-size: 16px;
+      z-index: 10;
+    }
+    .image-handler .dot{
+      color: #fff; margin-right: 8px;
+    }
+    .image-handler .active{
+      color: #FDB913;
+    }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div id="app">
+
+  <div class="image-list">
+    <ul :style="photoListPos">
+      <li v-for="p in placesDetail.photos"> <img :src="getPhoto( p )"> </li>
+    </ul>
+    <div class="image-handler">
+      <span v-for="(p, idx) in placesDetail.photos" :class="{ active: idx == currPhotoIdx }" class="dot">&#8226;</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="//maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyBxKtiOh3lYNzXBI6jjjC_oOGaqF1Z6Uy0"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.js"></script>
+<script src="//hammerjs.github.io/dist/hammer.min.js"></script>
+
+<script type="text/javascript">
+var vm = new Vue({
+  el: '#app',
+  data: {
+    parms: {},
+    placesDetail: {},
+    currPhotoIdx: 0,
+    photosLength: 0,
+  },
+  computed: {
+    photoListPos: function(){
+      var length = this.photosLength || 0;
+      return {
+        width: (screen.width * length) + 'px',
+        left: (-100 * this.currPhotoIdx) + '%',
+      };
+    }
+  },
+  methods: {
+    getPhoto: function (i){
+      return i.getUrl({ maxWidth: 640 });
+    },
+    getParms: function (){
+      var o = {};
+      window.location.search.slice(1).split('&').map( d => {
+        if( d.split('=')[0] !== '' ) {
+          o[d.split('=')[0]] = decodeURIComponent(d.split('=')[1]);
+        }
+      });
+      return o;
+    },
+    hammerInit: function(){
+      var timer = null,
+          elem = document.querySelector('.image-list'),
+          mc = new Hammer( elem );
+
+      this.photosLength = this.placesDetail.photos.length;
+
+      mc.on("panleft panright", function(ev) {
+        if( timer ){ clearTimeout(timer); }
+
+        timer = window.setTimeout(() => {
+          if( ev.type === 'panleft' && this.currPhotoIdx < this.photosLength - 1){
+            this.currPhotoIdx++;
+          }
+          else if( ev.type === 'panright' && this.currPhotoIdx > 0 ){
+            this.currPhotoIdx--;
+          }
+        }, 200);
+      }.bind(this));
+
+    },
+  },
+  created: function(){
+    this.parms = this.getParms();
+  },
+  mounted: function(){
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: new google.maps.LatLng(25.03082972648969, 121.55017727927338)
+    });
+
+    var service = new google.maps.places.PlacesService(map);
+
+    //service.getDetails({placeId: this.parms.place}, function(place, status){
+    service.getDetails({placeId: 'ChIJYbRuh9KrQjQR97QVMLEicQs'}, function(place, status){
+      this.placesDetail = place;
+      this.hammerInit();
+    }.bind(this));
+  }
+});
+</script>
+
+</body>
+</html>
