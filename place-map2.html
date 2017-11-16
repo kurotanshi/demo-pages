@@ -93,6 +93,7 @@
     };
 
     var parms = getParms();
+    parms.type = parms.type || 'restaurant';
 
     var mapinit = function(ele, type) {
 
@@ -137,21 +138,24 @@
 
       obj = obj || {};
       obj.radius = obj.radius || 800;
-      obj.place = obj.place || (parms.latlng) ? { lat: +parms.latlng.split(',')[0], lng: +parms.latlng.split(',')[1] } : { lat: 25.030362, lng: 121.548814 };
+      obj.place = obj.place || (parms.latlng) ?
+        { lat: +parms.latlng.split(',')[0], lng: +parms.latlng.split(',')[1] } :
+        { lat: 25.030362, lng: 121.548814 };
+
       obj.keyword = obj.keyword || '';
 
       var request = {
         keyword: obj.keyword,
         location: new google.maps.LatLng(obj.place.lat, obj.place.lng),
         rankBy: google.maps.places.RankBy.DISTANCE,
-        types: ['restaurant']
+        type: parms.type
       };
 
       var request2 = {
         keyword: obj.keyword,
         location: new google.maps.LatLng(obj.place.lat, obj.place.lng),
         radius: obj.radius,
-        types: ['restaurant']
+        type: parms.type //['restaurant']
       };
 
       var request_type = ( type === 0 ) ? request : request2;
@@ -209,12 +213,9 @@
 
         info = `
           <b>${place.name}</b> <br>
-          <span style="margin-right: 2em">★ ${place.rating}</span>
+          <span style="margin-right: 2em">★ ${ place.rating ? place.rating : '--'}</span>
           <span>距離 ${distance} m</span> <br>
-
-          地址: ${place.vicinity} <br>
-          營業狀態： ${ (place.opening_hours.open_now) ?
-            '<span style="color: green">營業中</span>' : '<span style="color: red">休息中</span>' }
+          地址: ${place.vicinity}
         `;
 
         infowindow.setContent(info);
