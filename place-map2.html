@@ -216,7 +216,7 @@
           <span style="margin-right: 2em">★ ${ place.rating ? place.rating : '--'}</span>
           <span>距離 ${distance} m</span> <br>
           地址: ${place.vicinity}
-          <div><a href="./place-detail.html?place=${place.place_id}">Detail Link</div>
+          <div><a target="_blank" href="./place-detail.html?place=${place.place_id}">Detail Link</div>
         `;
 
         infowindow.setContent(info);
