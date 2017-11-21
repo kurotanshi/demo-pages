@@ -93,7 +93,7 @@
     };
 
     var parms = getParms();
-    parms.type = parms.type.split(',')[0] || 'restaurant';
+    parms.type = (parms.type) ? parms.type.split(',')[0] : 'restaurant';
 
     var mapinit = function(ele, type) {
 
