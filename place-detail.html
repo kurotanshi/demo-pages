@@ -12,9 +12,14 @@
   <div id="app">
 
     <div class="image-list">
-      <ul :style="photoListPos">
-        <li v-for="p in placesDetail.photos"> <img :src="getPhoto( p )"> </li>
+
+      <ul class="place-photos" :style="photoListPos">
+        <li v-for="p in placesDetail.photos">
+          <img :src="getPhoto( p )">
+          <div class="attributions" v-if="p.html_attributions.length > 0" v-html="p.html_attributions[0]"></div>
+        </li>
       </ul>
+
       <div class="image-handler">
         <span v-for="(p, idx) in placesDetail.photos" :class="{ active: idx == currPhotoIdx }" class="dot">&#8226;</span>
       </div>
@@ -42,11 +47,10 @@
       <div> <i class="fa fa-map-marker" aria-hidden="true"></i> {{ placesDetail.formatted_address }}</div>
       <div> <i class="fa fa-phone" aria-hidden="true"></i> {{ placesDetail.formatted_phone_number }}</div>
       <div v-if="placesDetail.opening_hours">
-        <i class="fa fa-clock-o" aria-hidden="true"></i> {{ placesDetail.opening_hours.weekday_text[(new Date().getDay())] }}</div>
+        <i class="fa fa-clock-o" aria-hidden="true"></i> {{ placesDetail.opening_hours.weekday_text[(new Date().getDay()-1)] }}</div>
     </section>
 
   </div>
-
 <script src="//maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyBxKtiOh3lYNzXBI6jjjC_oOGaqF1Z6Uy0"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.js"></script>
 <script src="//hammerjs.github.io/dist/hammer.min.js"></script>
