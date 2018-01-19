@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>google panorama demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <div id="pano" style="width: 800px; height: 600px;"></div>
+
+
+  <script src="//maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyA3MKQEDAFBte5latbk9opC3mrLkvN3WLo"></script>
+  <script type="text/javascript">
+
+    (function(){
+
+      const center = new google.maps.LatLng(25.035996428324705, 121.55273878888262);
+      const sv = new google.maps.StreetViewService();
+      const panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), {});
+
+      sv.getPanorama({
+        location: center,
+        radius: 80,
+        preference: google.maps.StreetViewPreference.NEAREST,
+        source: google.maps.StreetViewSource.OUTDOOR
+      }, function(result, status) {
+
+        if (status === google.maps.StreetViewStatus.OK) {
+          panorama.setPosition(center);
+          panorama.setVisible(true);
+        }
+      });
+
+    })();
+
+  </script>
+
+</body>
+</html>
