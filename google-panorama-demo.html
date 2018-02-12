@@ -13,26 +13,52 @@
   <script src="//maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyA3MKQEDAFBte5latbk9opC3mrLkvN3WLo"></script>
   <script type="text/javascript">
 
-    (function(){
+var map;
+var panorama;
 
-      const center = new google.maps.LatLng(25.04183361607916, 121.54792422370089);
-      const sv = new google.maps.StreetViewService();
-      const panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), {});
+(function(){
+  var myLatlng = new google.maps.LatLng(25.04183361607916, 121.54792422370089);
+  var sv = new google.maps.StreetViewService();
 
-      sv.getPanorama({
-        location: center,
-        radius: 80,
-        preference: google.maps.StreetViewPreference.NEAREST,
-        source: google.maps.StreetViewSource.OUTDOOR
-      }, function(result, status) {
+  panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'));
 
-        if (status === google.maps.StreetViewStatus.OK) {
-          panorama.setPosition(center);
-          panorama.setVisible(true);
-        }
-      });
+  // Set the initial Street View camera to the center of the map
+  sv.getPanorama({
+    location: myLatlng,
+    radius: 50,
+    source: google.maps.StreetViewSource.OUTDOOR
+  }, processSVData);
 
-    })();
+  function processSVData(data, status) {
+    if (status === google.maps.StreetViewStatus.OK) {
+
+      panorama.setPano(data.location.pano);
+      panorama.setVisible(true);
+    }
+  }
+
+})();
+
+    // (function(){
+
+    //   const center = new google.maps.LatLng(25.04183361607916, 121.54792422370089);
+    //   const sv = new google.maps.StreetViewService();
+    //   const panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), {});
+
+    //   sv.getPanorama({
+    //     location: center,
+    //     radius: 80,
+    //     preference: google.maps.StreetViewPreference.NEAREST,
+    //     source: google.maps.StreetViewSource.OUTDOOR
+    //   }, function(result, status) {
+
+    //     if (status === google.maps.StreetViewStatus.OK) {
+    //       panorama.setPosition(center);
+    //       panorama.setVisible(true);
+    //     }
+    //   });
+
+    // })();
 
   </script>
 
