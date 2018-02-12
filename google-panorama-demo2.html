@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>google panorama demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <div id="map" style="width: 1200px; height: 700px;"></div>
+
+
+  <script src="//maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyA3MKQEDAFBte5latbk9opC3mrLkvN3WLo"></script>
+
+    <script>
+      var panorama = new google.maps.StreetViewPanorama(
+        document.getElementById('map'), {
+          pano: 'house',
+          visible: true,
+          panoProvider: getCustomPanorama
+      });
+
+      // var cafeMarker = new google.maps.Marker({
+      //   position: { lat: 40.730031, lng: -73.991428 },
+      //   map: panorama,
+      //   icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=cafe|FFFF00',
+      //   title: 'Cafe'
+      // });
+
+      // Return a pano image given the panoID.
+      function getCustomPanoramaTileUrl(pano, zoom, tileX, tileY) {
+        return './panorama/images/demo.jpg';
+      }
+
+      function getCustomPanoramaTileUrl2(pano, zoom, tileX, tileY) {
+        return './panorama/images/brick_lounge_2k.jpg';
+      }
+
+      // Construct the appropriate StreetViewPanoramaData given
+      // the passed pano IDs.
+      function getCustomPanorama(pano, zoom, tileX, tileY) {
+
+        if (pano === 'house') {
+          return {
+            location: {
+              pano: 'house',
+              description: 'House'
+            },
+            links: [
+              {
+                heading: 195,
+                description: 'room',
+                pano: 'room'
+              },
+            ],
+            // The text for the copyright control.
+            copyright: 'Imagery (c) 2018 XDDDD',
+            // The definition of the tiles for this panorama.
+            tiles: {
+              tileSize: new google.maps.Size(1024, 512),
+              worldSize: new google.maps.Size(1024, 512),
+              // The heading in degrees at the origin of the panorama
+              // tile set.
+              centerHeading: 260,
+              getTileUrl: getCustomPanoramaTileUrl
+            }
+          };
+        }
+        else if( pano === 'room' ){
+          return {
+            location: {
+              pano: 'room',
+              description: 'Room'
+            },
+            links: [
+              {
+                heading: 0,
+                description: 'house',
+                pano: 'house'
+              },
+            ],
+            // The text for the copyright control.
+            copyright: 'Imagery (c) 2018 XDDDD',
+            // The definition of the tiles for this panorama.
+            tiles: {
+              tileSize: new google.maps.Size(1024, 512),
+              worldSize: new google.maps.Size(1024, 512),
+              // The heading in degrees at the origin of the panorama
+              // tile set.
+              centerHeading: 160,
+              getTileUrl: getCustomPanoramaTileUrl2
+            }
+          };
+        }
+      }
+    </script>
+
+</body>
+</html>
