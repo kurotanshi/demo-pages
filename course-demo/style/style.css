@@ -88,7 +88,7 @@ img {
 }
 .m-header .right {
   float: right;
-  width: 410px;
+  width: 280px;
 }
 
 .nav-list li {
@@ -139,6 +139,13 @@ img {
 .nav-links li.right {
   float: right;
 }
+.nav-links li.feature {
+  background-color: #f6344b
+}
+.nav-links li.feature a {
+  color: yellow;
+}
+
 .nav-links li.active, .nav-links li:hover {
   position: relative;
   background-color: #f6344b;
