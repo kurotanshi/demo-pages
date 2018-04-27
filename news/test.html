@@ -1974,14 +1974,14 @@ B1 ~ 5 / 5樓            </li>
 </div>
 
 
-<script src="//s1.hfcdn.com/min/b=fp/yc/buy/Scripts&f=libs/jquery-1.11.1.min.js,libs/cirobox.js&v=20180425001"></script>
+<script src="//s1.hfcdn.com/min/b=fp/yc/buy/Scripts&f=libs/jquery-1.11.1.min.js,libs/cirobox.js&v=20180425001" defer></script>
 <script>
 
 var openLightbox=function(t){t.preventDefault();var e=$(this),o=400,i=700;e.data("cheight")&&(o=e.data("cheight")),e.data("cwidth")&&(i=e.data("cwidth")),e.CiRoBox({click:!1,url:e.attr("href"),width:i,height:o,closeafter:function(){$(".cirobox-bd").html(""),$(".cirobox-bd").attr("style","")},openafter:function(){e.hasClass("m-btn-notice")&&($(".cirobox-bd").attr({style:"padding: 0.5em 1em"}),$(".cirobox-bd .bd-title").length<1&&$(".cirobox-bd").prepend('<div class="bd-wrap" style="border-bottom: 1px solid #e2e2e2;"><h3 class="bd-title">'+e.data("title")+"</h3></div>"));var t=0;$(window).on("message",function(e){e.originalEvent.origin.indexOf("yungching.com.tw")>-1&&("closeBox"===e.originalEvent.data?$.CiRoBox.close():isNaN(parseInt(e.originalEvent.data,10))||t===e.originalEvent.data||(t=parseInt(e.originalEvent.data,10),$(".cirobox, .cirobox iframe").height(t),$.CiRoBox.resize(700,t)))})}})};$(".openLightbox").on("click",openLightbox),function(){var t,e=$(".header-marquee-bd"),o=0,i=e.children("li").length;if(i>0){var n=function(){t=setInterval(function(){++o>=i&&(o=0),$("html").hasClass("no-csstransforms")?e.css({top:-26*o+"px"}):e.css({transform:"translate(0, "+-26*o+"px)"})},3450)};n(),e.on({mouseenter:function(){window.clearInterval(t)},mouseleave:function(){window.clearInterval(t),n()}})}}(),function(){var t=0===$("#hiddentopmbid").length||""!==$("#hiddentopmbid").val(),e=$(".l-header .m-header-bar .m-header-bar-bd .m-badge"),o=parseInt(e.text(),10)||0,i=document.location.host.indexOf("-t")>0?"memberyc-t":document.location.host.indexOf("-s")>0?"memberyc-s":"memberyc";t||0!==o||e.parent().removeClass("ga_click_trace").off("click").on("click",function(t){t.preventDefault();document.createElement("iframe");var e=[];return e.push('<div class="lb-ins">'),e.push('<div class="lb-title"><h3>收藏</h3></div>'),e.push('<div class="lb-content"><div class="l-unlogin" id="unlogin">'),e.push('<p>您尚未登入會員，請先<a target="_top" href="https://'+i+".yungching.com.tw/Account/Login?AFromURL="+window.location.href+'">登入</a>。</p>'),e.push('<p>若您還不是會員請先<a target="_top" href="https://'+i+'.yungching.com.tw/Account/SignUp?AccountPattern=Mobile&MBSourceID=108">加入會員</a>。</p>'),e.push("</div></div>"),$(this).CiRoBox({click:!1,keyboardclose:!1,backdropclose:!0,width:570,height:155,content:e.join("")}),!1})}();
 </script>
 
     <footer class="l-footer">
-        <script type="text/javascript" src="//s1.hfcdn.com/min/b=fp/yc_common&f=footer.js&v=20180425001"></script>
+        <script src="//s1.hfcdn.com/min/b=fp/yc_common&f=footer.js&v=20180425001" defer></script>
     </footer>
 
         <script>
@@ -2023,7 +2023,7 @@ var _searchCondition = {
 
 
 
-    <script src="//s1.hfcdn.com/min/b=fp/yc/buy/Scripts&f=libs/jquery.placeholder.min.js,libs/angular.min.js,ycapp.js,ycapp-searcCtrl.js,ycapp-searchCtrl.js,ycapp-factories.js,ycapp-directives.js,favorite.js&v=20180425001"></script>
+    <script src="//s1.hfcdn.com/min/b=fp/yc/buy/Scripts&f=libs/jquery.placeholder.min.js,libs/angular.min.js,ycapp.js,ycapp-searcCtrl.js,ycapp-searchCtrl.js,ycapp-factories.js,ycapp-directives.js,favorite.js&v=20180425001" defer></script>
 
 </body>
 </html>
