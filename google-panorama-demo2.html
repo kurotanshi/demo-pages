@@ -20,12 +20,12 @@
           panoProvider: getCustomPanorama
       });
 
-      // var cafeMarker = new google.maps.Marker({
-      //   position: { lat: 40.730031, lng: -73.991428 },
-      //   map: panorama,
-      //   icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=cafe|FFFF00',
-      //   title: 'Cafe'
-      // });
+      var cafeMarker = new google.maps.Marker({
+        position: { lat: 40.730031, lng: -73.991428 },
+        map: panorama,
+        icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=cafe|FFFF00',
+        title: 'Cafe'
+      });
 
       // Return a pano image given the panoID.
       function getCustomPanoramaTileUrl(pano, zoom, tileX, tileY) {
@@ -44,7 +44,8 @@
           return {
             location: {
               pano: 'house',
-              description: 'House'
+              description: 'House',
+              latLng: new google.maps.LatLng(40.730031, -73.991428),
             },
             links: [
               {
