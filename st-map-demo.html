@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style type="text/css">
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 { padding: 0; margin: 0; }
+
+    #map {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    #addr{
+      position: absolute;
+      top: 1em; right: 3em; z-index: 200;
+      padding: 3px 10px;
+      width: 400px; font-size: 20px;
+    }
+    .panto{
+      position: absolute;
+      top: 3em; right: 9em; z-index: 200;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .toggleStView {
+      position: absolute;
+      top: 3em; right: 3em; z-index: 100;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div id="map"></div>
+  <input id="addr" type="text" value="" placeholder="輸入地址">
+  <button class="panto">切換位置</button>
+  <button class="toggleStView">街景切換</button>
+
+  <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="//maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyBxKtiOh3lYNzXBI6jjjC_oOGaqF1Z6Uy0"></script>
+
+  <script type="text/javascript">
+    (function() {
+      var toggleStView = false;
+      var center = new google.maps.LatLng(25.030362, 121.548814);
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 17,
+        mapTypeControl: false,
+        panControl: true,
+        scaleControl: true,
+        streetViewControl: true,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_CENTER,
+          style: google.maps.ZoomControlStyle.SMALL
+        },
+        center: center
+      });
+
+      var marker = new google.maps.Marker({
+        position: center, map: map,
+      });
+
+      var panorama = map.getStreetView();
+      var geocoder = new google.maps.Geocoder();
+
+
+      document.querySelector('.panto').addEventListener('click', function(event) {
+        var address = document.getElementById('addr').value;
+
+          geocoder.geocode({'address': address}, function(results, status) {
+            if (status === 'OK') {
+              center = results[0].geometry.location;
+              map.setCenter(results[0].geometry.location);
+              marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+              });
+
+            }
+            else {
+              alert('查不到座標');
+            }
+          });
+      });
+
+      document.querySelector('.toggleStView').addEventListener('click', function(event) {
+        if (!toggleStView) {
+          toggleStView = !toggleStView;
+          var sv = new google.maps.StreetViewService();
+          var target = new google.maps.LatLng(center.lat() + 0.000022, center.lng() + 0.000022);
+
+          // 如果街景服務 ok
+          sv.getPanoramaByLocation(target, 50, function(result, status) {
+            if (status == google.maps.StreetViewStatus.OK) {
+              panorama.setPosition(target);
+              panorama.setVisible(true);
+              // 計算街景預設角度
+              heading = google.maps.geometry.spherical.computeHeading(result.location.latLng, target);
+
+              // 等街景 load 完成後再轉角度
+              window.setTimeout(function(){
+                panorama.setPov({ heading: heading, pitch: 0 });
+              }, 100);
+
+            }
+          });
+        }
+        else {
+          toggleStView = !toggleStView;
+          panorama.setVisible(false);
+        }
+      });
+
+    })();
+  </script>
+
+</body>
+
+</html>
