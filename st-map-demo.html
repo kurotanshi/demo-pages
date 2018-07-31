@@ -102,7 +102,7 @@
         if (!toggleStView) {
           toggleStView = !toggleStView;
           var sv = new google.maps.StreetViewService();
-          var target = new google.maps.LatLng(center.lat() + 0.000022, center.lng() + 0.000022);
+          var target = center ;//new google.maps.LatLng(center.lat() + 0.000022, center.lng() + 0.000022);
 
           // 如果街景服務 ok
           sv.getPanorama({
