@@ -105,10 +105,18 @@
           var target = new google.maps.LatLng(center.lat() + 0.000022, center.lng() + 0.000022);
 
           // 如果街景服務 ok
-          sv.getPanoramaByLocation(target, 50, function(result, status) {
+          sv.getPanorama({
+            location: target,
+            radius: 50,
+            preference: google.maps.StreetViewPreference.NEAREST,
+            source: google.maps.StreetViewSource.OUTDOOR
+          }, function(result, status) {
             if (status == google.maps.StreetViewStatus.OK) {
-              panorama.setPosition(target);
+              // panorama.setPosition(target);
+              // panorama.setVisible(true);
+              panorama.setPano(result.location.pano);
               panorama.setVisible(true);
+
               // 計算街景預設角度
               heading = google.maps.geometry.spherical.computeHeading(result.location.latLng, target);
 
@@ -116,9 +124,12 @@
               window.setTimeout(function(){
                 panorama.setPov({ heading: heading, pitch: 0 });
               }, 100);
-
             }
           });
+
+          // sv.getPanoramaByLocation(target, 50, function(result, status) {
+
+          // });
         }
         else {
           toggleStView = !toggleStView;
